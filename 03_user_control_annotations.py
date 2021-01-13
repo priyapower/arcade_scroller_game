@@ -5,7 +5,7 @@ import arcade
 
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 650
-SCREEN_TITLE = "Platformer"
+SCREEN_TITLE = "Priya's 2D Funhouse"
 
 CHARACTER_SCALING = 1
 TILE_SCALING = 0.5
