@@ -11,9 +11,9 @@ CHARACTER_SCALING = 1
 TILE_SCALING = 0.5
 COIN_SCALING = 0.5
 
-PLAYER_MOVEMENT_SPEED = 5
-GRAVITY = 1
-PLAYER_JUMP_SPEED = 20
+PLAYER_MOVEMENT_SPEED = 3
+GRAVITY = 0.8
+PLAYER_JUMP_SPEED = 15
 
 LEFT_VIEWPORT_MARGIN = 250
 RIGHT_VIEWPORT_MARGIN = 250
@@ -25,9 +25,7 @@ class MyGame(arcade.Window):
     """
     Main application class.
     """
-
     def __init__(self):
-
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
 
         self.coin_list = None
@@ -38,6 +36,11 @@ class MyGame(arcade.Window):
 
         self.physics_engine = None
 
+        self.left_pressed = False
+        self.right_pressed = False
+        self.up_pressed = False
+        self.down_pressed = False
+
         self.view_bottom = 0
         self.view_left = 0
 
@@ -45,7 +48,6 @@ class MyGame(arcade.Window):
 
     def setup(self):
         """ Set up the game here. Call this function to restart the game. """
-
         self.view_bottom = 0
         self.view_left = 0
 
@@ -60,7 +62,8 @@ class MyGame(arcade.Window):
         self.player_list.append(self.player_sprite)
 
         for x in range(0, 1250, 64):
-            wall = arcade.Sprite(":resources:images/tiles/grassMid.png", TILE_SCALING)
+            image_source2 = ":resources:images/tiles/grassMid.png"
+            wall = arcade.Sprite(image_source2, TILE_SCALING)
             wall.center_x = x
             wall.center_y = 32
             self.wall_list.append(wall)
@@ -70,7 +73,8 @@ class MyGame(arcade.Window):
                            [768, 96]]
 
         for coordinate in coordinate_list:
-            wall = arcade.Sprite(":resources:images/tiles/boxCrate_double.png", TILE_SCALING)
+            image_source3 = ":resources:images/tiles/boxCrate_double.png"
+            wall = arcade.Sprite(image_source3, TILE_SCALING)
             wall.position = coordinate
             self.wall_list.append(wall)
 
@@ -80,7 +84,6 @@ class MyGame(arcade.Window):
 
     def on_draw(self):
         """ Render the screen. """
-
         arcade.start_render()
 
         self.wall_list.draw()
@@ -89,27 +92,44 @@ class MyGame(arcade.Window):
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
-
         if key == arcade.key.UP or key == arcade.key.W or key == arcade.key.SPACE:
-            if self.physics_engine.can_jump():
-                self.player_sprite.change_y = PLAYER_JUMP_SPEED
+            self.up_pressed = True
+        elif key == arcade.key.DOWN or key == arcade.key.S:
+            self.down_pressed = True
         elif key == arcade.key.LEFT or key == arcade.key.A:
-            self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
+            self.left_pressed = True
         elif key == arcade.key.RIGHT or key == arcade.key.D:
-            self.player_sprite.change_x = PLAYER_MOVEMENT_SPEED
+            self.right_pressed = True
 
     def on_key_release(self, key, modifiers):
         """Called when the user releases a key. """
-
-        if key == arcade.key.LEFT or key == arcade.key.A:
-            self.player_sprite.change_x = 0
+        if key == arcade.key.UP or key == arcade.key.W:
+            self.up_pressed = False
+        elif key == arcade.key.DOWN or key == arcade.key.S:
+            self.down_pressed = False
+        elif key == arcade.key.LEFT or key == arcade.key.A:
+            self.left_pressed = False
         elif key == arcade.key.RIGHT or key == arcade.key.D:
-            self.player_sprite.change_x = 0
+            self.right_pressed = False
 
     def on_update(self, delta_time):
         """ Movement and game logic """
+        self.player_sprite.change_x = 0
 
+        if self.up_pressed and not self.down_pressed:
+            if self.physics_engine.can_jump():
+                self.player_sprite.change_y = PLAYER_JUMP_SPEED
+        elif self.down_pressed and not self.up_pressed:
+            self.player_sprite.change_y = -PLAYER_MOVEMENT_SPEED
+        if self.left_pressed and not self.right_pressed:
+            self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
+        elif self.right_pressed and not self.left_pressed:
+            self.player_sprite.change_x = PLAYER_MOVEMENT_SPEED
+
+        self.player_list.update()
         self.physics_engine.update()
+
+        # --- Manage Scrolling ---
 
         changed = False
 
