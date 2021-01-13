@@ -24,7 +24,7 @@ class MyGame(arcade.Window):
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
 
         # This lets us set a background color, specifically using the CSS color schemes, selecting cornflower_blue
-        arcade.set_background_color(arcade.csscolor.CORNFLOWER_BLUE)
+        arcade.set_background_color(arcade.csscolor.MEDIUM_VIOLET_RED)
 
     # This will eventually hold our setup
     def setup(self):
