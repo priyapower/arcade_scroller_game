@@ -12,18 +12,15 @@ TILE_SCALING = 0.5
 COIN_SCALING = 0.5
 
 PLAYER_MOVEMENT_SPEED = 5
+# New constant for gravity
+GRAVITY = 1
+# New constant for player_jump_speed
+PLAYER_JUMP_SPEED = 20
 
-# Our player is now an entire Class
 class Player(arcade.Sprite):
-
+    # Creates boundaries so the player doesn't walk off the edge of the screen
     def update(self):
         """ Move the player """
-        # Move player.
-        # Remove these lines if physics engine is moving player.
-        self.center_x += self.change_x
-        self.center_y += self.change_y
-
-        # Check for out-of-bounds
         if self.left < 0:
             self.left = 0
         elif self.right > SCREEN_WIDTH - 1:
@@ -48,7 +45,6 @@ class MyGame(arcade.Window):
         self.player_sprite = None
         self.physics_engine = None
 
-        # Track the current state of what key is pressed
         self.left_pressed = False
         self.right_pressed = False
         self.up_pressed = False
@@ -62,29 +58,42 @@ class MyGame(arcade.Window):
         self.wall_list = arcade.SpriteList(use_spatial_hash=True)
         self.coin_list = arcade.SpriteList(use_spatial_hash=True)
 
-        # Changes which class it calls from arcade.Sprite() to Player()
-        self.player_sprite = Player(":resources:images/animated_characters/female_adventurer/femaleAdventurer_idle.png",
-                                           CHARACTER_SCALING)
+        # This time we've saved the image source to it's own variable for use in the next line
+        image_source = ":resources:images/animated_characters/female_adventurer/femaleAdventurer_idle.png"
+        self.player_sprite = Player(image_source, CHARACTER_SCALING)
         self.player_sprite.center_x = 64
         self.player_sprite.center_y = 128
         self.player_list.append(self.player_sprite)
 
         for x in range(0, 1250, 64):
-            wall = arcade.Sprite(":resources:images/tiles/grassMid.png", TILE_SCALING)
+            # Saving the image source in a separate variable for readability
+            image_source2 = ":resources:images/tiles/grassMid.png"
+            wall = arcade.Sprite(image_source2, TILE_SCALING)
             wall.center_x = x
             wall.center_y = 32
             self.wall_list.append(wall)
-
-        self.physics_engine = arcade.PhysicsEngineSimple(self.player_sprite, self.wall_list)
 
         coordinate_list = [[256, 96],
                            [512, 96],
                            [768, 96]]
 
         for coordinate in coordinate_list:
-            wall = arcade.Sprite(":resources:images/tiles/boxCrate_double.png", TILE_SCALING)
+            # Again, saving the image source in a separate variable for readability
+            image_source3 = ":resources:images/tiles/boxCrate_double.png"
+            wall = arcade.Sprite(image_source3, TILE_SCALING)
             wall.position = coordinate
             self.wall_list.append(wall)
+
+        # UPDATE TO PHYSICS ENGINE
+        # https://arcade.academy/arcade.html?highlight=physicsengineplatformer#arcade.PhysicsEnginePlatformer
+        # Create a physics engine for a platformer.
+        # Has 4 possible parameters
+            # player_sprite (Sprite) – The moving sprite
+            # platforms (SpriteList) – The sprites it can’t move through
+            # gravity_constant (float) – Downward acceleration per frame
+            # ladders (SpriteList) – Ladders the user can climb on
+        # We are using the player, the wall, and the gravity constant
+        self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite, self.wall_list, GRAVITY)
 
     def on_draw(self):
         """ Render the screen. """
@@ -97,6 +106,8 @@ class MyGame(arcade.Window):
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
 
+        # Sets key directional_presses to true depending if user presses certain keys
+        # This accounts for the arrow pad, the AWDS set, and the space bar
         if key == arcade.key.UP or key == arcade.key.W or key == arcade.key.SPACE:
             self.up_pressed = True
         elif key == arcade.key.DOWN or key == arcade.key.S:
@@ -109,6 +120,7 @@ class MyGame(arcade.Window):
     def on_key_release(self, key, modifiers):
         """Called when the user releases a key. """
 
+        # Sets key directional_presses to False if user releases specific key
         if key == arcade.key.UP or key == arcade.key.W:
             self.up_pressed = False
         elif key == arcade.key.DOWN or key == arcade.key.S:
@@ -117,16 +129,22 @@ class MyGame(arcade.Window):
             self.left_pressed = False
         elif key == arcade.key.RIGHT or key == arcade.key.D:
             self.right_pressed = False
-    
+
     def on_update(self, delta_time):
         """ Movement and game logic """
 
         # Calculate speed based on the keys pressed
+        # We only need to reset the x value (left and right), since the y value now has a gravity component
         self.player_sprite.change_x = 0
-        self.player_sprite.change_y = 0
 
+        # If up is triggered
         if self.up_pressed and not self.down_pressed:
-            self.player_sprite.change_y = PLAYER_MOVEMENT_SPEED
+            # First check if the physics engine can_jump: https://arcade.academy/arcade.html?highlight=can_jump#arcade.PhysicsEnginePlatformer.can_jump
+            # Method that looks to see if there is a floor under the player_sprite.
+            # If there is a floor, the player can jump and we return a True.
+            if self.physics_engine.can_jump():
+                # Change the y velocity for the player jump
+                self.player_sprite.change_y = PLAYER_JUMP_SPEED
         elif self.down_pressed and not self.up_pressed:
             self.player_sprite.change_y = -PLAYER_MOVEMENT_SPEED
         if self.left_pressed and not self.right_pressed:
@@ -145,7 +163,6 @@ def main():
     window = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
     window.setup()
     arcade.run()
-
 
 if __name__ == "__main__":
     main()

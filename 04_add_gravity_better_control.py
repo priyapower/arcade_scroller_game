@@ -12,18 +12,13 @@ TILE_SCALING = 0.5
 COIN_SCALING = 0.5
 
 PLAYER_MOVEMENT_SPEED = 5
+GRAVITY = 1
+PLAYER_JUMP_SPEED = 20
 
-# Our player is now an entire Class
+
 class Player(arcade.Sprite):
-
     def update(self):
         """ Move the player """
-        # Move player.
-        # Remove these lines if physics engine is moving player.
-        self.center_x += self.change_x
-        self.center_y += self.change_y
-
-        # Check for out-of-bounds
         if self.left < 0:
             self.left = 0
         elif self.right > SCREEN_WIDTH - 1:
@@ -33,6 +28,7 @@ class Player(arcade.Sprite):
             self.bottom = 0
         elif self.top > SCREEN_HEIGHT - 1:
             self.top = SCREEN_HEIGHT - 1
+
 
 class MyGame(arcade.Window):
     """
@@ -48,7 +44,6 @@ class MyGame(arcade.Window):
         self.player_sprite = None
         self.physics_engine = None
 
-        # Track the current state of what key is pressed
         self.left_pressed = False
         self.right_pressed = False
         self.up_pressed = False
@@ -62,29 +57,30 @@ class MyGame(arcade.Window):
         self.wall_list = arcade.SpriteList(use_spatial_hash=True)
         self.coin_list = arcade.SpriteList(use_spatial_hash=True)
 
-        # Changes which class it calls from arcade.Sprite() to Player()
-        self.player_sprite = Player(":resources:images/animated_characters/female_adventurer/femaleAdventurer_idle.png",
-                                           CHARACTER_SCALING)
+        image_source = ":resources:images/animated_characters/female_adventurer/femaleAdventurer_idle.png"
+        self.player_sprite = Player(image_source, CHARACTER_SCALING)
         self.player_sprite.center_x = 64
         self.player_sprite.center_y = 128
         self.player_list.append(self.player_sprite)
 
         for x in range(0, 1250, 64):
-            wall = arcade.Sprite(":resources:images/tiles/grassMid.png", TILE_SCALING)
+            image_source2 = ":resources:images/tiles/grassMid.png"
+            wall = arcade.Sprite(image_source2, TILE_SCALING)
             wall.center_x = x
             wall.center_y = 32
             self.wall_list.append(wall)
-
-        self.physics_engine = arcade.PhysicsEngineSimple(self.player_sprite, self.wall_list)
 
         coordinate_list = [[256, 96],
                            [512, 96],
                            [768, 96]]
 
         for coordinate in coordinate_list:
-            wall = arcade.Sprite(":resources:images/tiles/boxCrate_double.png", TILE_SCALING)
+            image_source3 = ":resources:images/tiles/boxCrate_double.png"
+            wall = arcade.Sprite(image_source3, TILE_SCALING)
             wall.position = coordinate
             self.wall_list.append(wall)
+
+        self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite, self.wall_list, GRAVITY)
 
     def on_draw(self):
         """ Render the screen. """
@@ -117,16 +113,15 @@ class MyGame(arcade.Window):
             self.left_pressed = False
         elif key == arcade.key.RIGHT or key == arcade.key.D:
             self.right_pressed = False
-    
+
     def on_update(self, delta_time):
         """ Movement and game logic """
 
-        # Calculate speed based on the keys pressed
         self.player_sprite.change_x = 0
-        self.player_sprite.change_y = 0
 
         if self.up_pressed and not self.down_pressed:
-            self.player_sprite.change_y = PLAYER_MOVEMENT_SPEED
+            if self.physics_engine.can_jump():
+                self.player_sprite.change_y = PLAYER_JUMP_SPEED
         elif self.down_pressed and not self.up_pressed:
             self.player_sprite.change_y = -PLAYER_MOVEMENT_SPEED
         if self.left_pressed and not self.right_pressed:
@@ -134,11 +129,9 @@ class MyGame(arcade.Window):
         elif self.right_pressed and not self.left_pressed:
             self.player_sprite.change_x = PLAYER_MOVEMENT_SPEED
 
-        # Call update to move the sprite
-        # If using a physics engine, call update player to rely on physics engine
-        # for movement, and call physics engine here.
         self.player_list.update()
         self.physics_engine.update()
+
 
 def main():
     """ Main method """
