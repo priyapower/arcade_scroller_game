@@ -5,7 +5,7 @@ import arcade
 
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 650
-SCREEN_TITLE = "Platformer"
+SCREEN_TITLE = "Priya's 2D Funhouse"
 
 CHARACTER_SCALING = 1
 TILE_SCALING = 0.5
@@ -158,6 +158,8 @@ class MyGame(arcade.Window):
         # If the player's left coord is less than the left boundary from above
             # .left: https://arcade.academy/arcade.html?highlight=.left#arcade.Sprite.left
             # Return the x coordinate of the left-side of the sprite’s hit box
+                # Any transparent “white-space” around an image counts as the "hitbox"
+                # You can trim the space in a graphics editor OR specify a hitbox
         if self.player_sprite.left < left_boundary:
             # "-=" is called subtraction assignment: https://python-reference.readthedocs.io/en/latest/docs/operators/subtraction_assignment.html
                 # Subtracts a value from the variable and assigns the result to that variable.
