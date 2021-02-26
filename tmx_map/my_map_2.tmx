@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="2021.02.15" orientation="orthogonal" renderorder="right-down" width="25" height="20" tilewidth="128" tileheight="128" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" name="my_tiles" tilewidth="128" tileheight="128" tilecount="30" columns="0">
+  <grid orientation="orthogonal" width="1" height="1"/>
+  <tile id="9">
+   <image width="128" height="128" source="../images/tiles/bush.png"/>
+  </tile>
+  <tile id="10">
+   <image width="128" height="128" source="../images/tiles/boxCrate_double.png"/>
+  </tile>
+  <tile id="11">
+   <image width="128" height="128" source="../images/tiles/boxCrate_single.png"/>
+  </tile>
+  <tile id="12">
+   <image width="128" height="128" source="../images/tiles/boxCrate.png"/>
+  </tile>
+  <tile id="13">
+   <image width="128" height="128" source="../images/tiles/brickBrown.png"/>
+  </tile>
+  <tile id="14">
+   <image width="128" height="128" source="../images/tiles/brickGrey.png"/>
+  </tile>
+  <tile id="15">
+   <image width="128" height="128" source="../images/tiles/bridgeA.png"/>
+  </tile>
+  <tile id="16">
+   <image width="128" height="128" source="../images/tiles/bridgeB.png"/>
+  </tile>
+  <tile id="17">
+   <image width="128" height="128" source="../images/tiles/cactus.png"/>
+  </tile>
+  <tile id="18">
+   <image width="128" height="128" source="../images/tiles/dirt.png"/>
+  </tile>
+  <tile id="19">
+   <image width="128" height="128" source="../images/tiles/dirtCenter_rounded.png"/>
+  </tile>
+  <tile id="20">
+   <image width="128" height="128" source="../images/tiles/dirtCenter.png"/>
+  </tile>
+  <tile id="21">
+   <image width="128" height="128" source="../images/tiles/dirtCliff_left.png"/>
+  </tile>
+  <tile id="22">
+   <image width="128" height="128" source="../images/tiles/dirtCliff_right.png"/>
+  </tile>
+  <tile id="23">
+   <image width="128" height="128" source="../images/tiles/dirtCliffAlt_left.png"/>
+  </tile>
+  <tile id="24">
+   <image width="128" height="128" source="../images/tiles/dirtCliffAlt_right.png"/>
+  </tile>
+  <tile id="25">
+   <image width="128" height="128" source="../images/tiles/dirtCorner_left.png"/>
+  </tile>
+  <tile id="26">
+   <image width="128" height="128" source="../images/tiles/dirtCorner_right.png"/>
+  </tile>
+  <tile id="27">
+   <image width="128" height="128" source="../images/tiles/dirtHalf_left.png"/>
+  </tile>
+  <tile id="28">
+   <image width="128" height="128" source="../images/tiles/dirtHalf_mid.png"/>
+  </tile>
+  <tile id="29">
+   <image width="128" height="128" source="../images/tiles/dirtHalf_right.png"/>
+  </tile>
+  <tile id="30">
+   <image width="128" height="128" source="../images/tiles/dirtHalf.png"/>
+  </tile>
+  <tile id="31">
+   <image width="128" height="128" source="../images/tiles/dirtHill_left.png"/>
+  </tile>
+  <tile id="32">
+   <image width="128" height="128" source="../images/tiles/dirtHill_right.png"/>
+  </tile>
+  <tile id="33">
+   <image width="128" height="128" source="../images/tiles/dirtLeft.png"/>
+  </tile>
+  <tile id="34">
+   <image width="128" height="128" source="../images/tiles/dirtMid.png"/>
+  </tile>
+  <tile id="35">
+   <image width="128" height="128" source="../images/tiles/dirtRight.png"/>
+  </tile>
+  <tile id="57">
+   <image width="128" height="128" source="../images/tiles/ladderMid.png"/>
+  </tile>
+  <tile id="58">
+   <image width="128" height="128" source="../images/tiles/ladderTop.png"/>
+  </tile>
+  <tile id="84">
+   <image width="128" height="128" source="../images/tiles/mushroomRed.png"/>
+  </tile>
+ </tileset>
+ <layer id="1" name="Platforms" width="25" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFAw24kDAxQIlCPJCAB4qHKhh1P/1BKBKWxYEFiMBiQGwNxMIEMKXACohFCWBq2IEO0O1QoIEd6PZIUWgPLjuoaQ+xdiDbIwTF1LADBgilO0KYjwg7APsGCwc=
+  </data>
+ </layer>
+</map>
