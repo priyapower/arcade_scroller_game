@@ -10,6 +10,7 @@ SCREEN_TITLE = "Priya's 2D Funhouse"
 CHARACTER_SCALING = 1
 TILE_SCALING = 0.5
 COIN_SCALING = 0.5
+# THIS MATCHES THE TILED MAP FILE PIXEL SIZE
 SPRITE_PIXEL_SIZE = 128
 GRID_PIXEL_SIZE = (SPRITE_PIXEL_SIZE * TILE_SCALING)
 
@@ -40,6 +41,7 @@ class MyGame(arcade.Window):
 
         self.physics_engine = None
 
+        # MY USER CONTROL UPDATES
         self.left_pressed = False
         self.right_pressed = False
         self.up_pressed = False
@@ -50,9 +52,10 @@ class MyGame(arcade.Window):
 
         self.score = 0
 
-        self.collect_coin_sound = arcade.load_sound("sounds/coin1.wav")
-        self.jump_sound = arcade.load_sound("sounds/jump1.wav")
+        self.collect_coin_sound = arcade.load_sound("../sounds/coin1.wav")
+        self.jump_sound = arcade.load_sound("../sounds/jump1.wav")
 
+        # I LIKE TO CHANGE MY BACKGROUND COLOR FOR MY PERSONAL PREFERENCE OF THIS PRETTY PINK COLOR
         arcade.set_background_color(arcade.csscolor.MEDIUM_VIOLET_RED)
 
     def setup(self):
@@ -67,21 +70,38 @@ class MyGame(arcade.Window):
         self.wall_list = arcade.SpriteList()
         self.coin_list = arcade.SpriteList()
 
+        # image_source = ":resources:images/animated_characters/female_adventurer/femaleAdventurer_idle.png"
         image_source = "images/player_1/female_stand.png"
 
         self.player_sprite = arcade.Sprite(image_source, CHARACTER_SCALING)
+        # MATCHES THE PIXEL SIZE SET IN THE TILED MAP FILE
         self.player_sprite.center_x = 128
         self.player_sprite.center_y = 128
         self.player_list.append(self.player_sprite)
 
+        # HERE IS THE LOAD OF THE MAP!!! THIS ALSO REPLACES THE CODE THAT STATICALLY PLACED A FLOOR, CRATES, AND COINS IN PREVIOUS CODE. STARTS WITH " for x in range(0, 1250, 64):"
+
         # --- Load in a map from the tiled editor ---
+
+        # NAME OF THE MAP FILE TO LOAD
+            # THIS PATHWAY IMPLIES THAT THERE IS A DIRECTORY CALLED "tmx_maps" NESTED UNDER OUR PROJECT DIRECTORY
+            # TESTING THIS THEORY
+
+        # map_name = ":resources:tmx_map/map.tmx"
+        # map_name = "tmx_map/map.tsx.tmx"
         map_name = "tmx_map/my_map_3.tmx"
+
+
+        # NAME OF THE LAYER IN THE FILE THAT HAS OUR PLATFORM/WALLS
         platforms_layer_name = 'Platforms'
+        # NAME OF THE LAYER THAT HAS ITEMS FOR PICK-UP
         coins_layer_name = 'Coins'
 
+        # READ THE TILED MAP
         my_map = arcade.tilemap.read_tmx(map_name)
 
         # -- Platforms
+        # PULLS THE PLATFORM FROM THE "PLATFORMS" LAYER OF THE TILED MAP
         self.wall_list = arcade.tilemap.process_layer(map_object=my_map,
                                                       layer_name=platforms_layer_name,
                                                       scaling=TILE_SCALING,
@@ -91,9 +111,11 @@ class MyGame(arcade.Window):
         self.coin_list = arcade.tilemap.process_layer(my_map, coins_layer_name, TILE_SCALING)
 
         # --- Other stuff
+        # SET THE BACKGROUND COLOR (THIS IS DONE IN "TILED" BY SELECTING MAP PROPERTIES FROM THE MAP DROPDOWN (NEAR FILE, EDIT, ...)
         if my_map.background_color:
             arcade.set_background_color(my_map.background_color)
 
+        # THIS IS A RETURN TO THE PREVIOUS CODE
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite,
                                                              self.wall_list,
                                                              GRAVITY)
@@ -114,6 +136,7 @@ class MyGame(arcade.Window):
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
 
+        # MY USER CONTROL UPDATES
         if key == arcade.key.UP or key == arcade.key.W or key == arcade.key.SPACE:
             self.up_pressed = True
         elif key == arcade.key.DOWN or key == arcade.key.S:
@@ -126,6 +149,7 @@ class MyGame(arcade.Window):
     def on_key_release(self, key, modifiers):
         """Called when the user releases a key. """
 
+        # MY USER CONTROL UPDATES
         if key == arcade.key.UP or key == arcade.key.W:
             self.up_pressed = False
         elif key == arcade.key.DOWN or key == arcade.key.S:
@@ -138,6 +162,7 @@ class MyGame(arcade.Window):
     def on_update(self, delta_time):
         """ Movement and game logic """
 
+        # MY USER CONTROL UPDATES
         self.player_sprite.change_x = 0
 
         if self.up_pressed and not self.down_pressed:
