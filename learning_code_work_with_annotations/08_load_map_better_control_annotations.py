@@ -71,7 +71,7 @@ class MyGame(arcade.Window):
         self.coin_list = arcade.SpriteList()
 
         # image_source = ":resources:images/animated_characters/female_adventurer/femaleAdventurer_idle.png"
-        image_source = "images/player_1/female_stand.png"
+        image_source = "../images/player_1/female_stand.png"
 
         self.player_sprite = arcade.Sprite(image_source, CHARACTER_SCALING)
         # MATCHES THE PIXEL SIZE SET IN THE TILED MAP FILE
@@ -89,7 +89,7 @@ class MyGame(arcade.Window):
 
         # map_name = ":resources:tmx_map/map.tmx"
         # map_name = "tmx_map/map.tsx.tmx"
-        map_name = "tmx_map/my_map_3.tmx"
+        map_name = "tmx_map/funhouse_level_3.tmx"
 
 
         # NAME OF THE LAYER IN THE FILE THAT HAS OUR PLATFORM/WALLS
