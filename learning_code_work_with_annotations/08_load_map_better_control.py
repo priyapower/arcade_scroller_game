@@ -50,8 +50,8 @@ class MyGame(arcade.Window):
 
         self.score = 0
 
-        self.collect_coin_sound = arcade.load_sound("sounds/coin1.wav")
-        self.jump_sound = arcade.load_sound("sounds/jump1.wav")
+        self.collect_coin_sound = arcade.load_sound("../sounds/coin1.wav")
+        self.jump_sound = arcade.load_sound("../sounds/jump1.wav")
 
         arcade.set_background_color(arcade.csscolor.MEDIUM_VIOLET_RED)
 
@@ -75,7 +75,7 @@ class MyGame(arcade.Window):
         self.player_list.append(self.player_sprite)
 
         # --- Load in a map from the tiled editor ---
-        map_name = "tmx_map/my_map_3.tmx"
+        map_name = "tmx_map/funhouse_level_1.tmx"
         platforms_layer_name = 'Platforms'
         coins_layer_name = 'Coins'
 
